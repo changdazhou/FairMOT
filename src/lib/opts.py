@@ -14,40 +14,40 @@ class opts(object):
     self.parser.add_argument('--dataset', default='jde', help='jde')
     self.parser.add_argument('--exp_id', default='default')
     self.parser.add_argument('--test', action='store_true')
-    #self.parser.add_argument('--load_model', default='../models/ctdet_coco_dla_2x.pth',
+    #self.parser.add_argument('--load_model', default='../models/fairmot_dla34',
                              #help='path to pretrained model')
-    self.parser.add_argument('--load_model', default='',
+    self.parser.add_argument('--load_model', default='../models/fairmot_dla34',
                              help='path to pretrained model')
     self.parser.add_argument('--resume', action='store_true',
                              help='resume an experiment. '
                                   'Reloaded the optimizer parameter and '
                                   'set load_model to model_last.pth '
-                                  'in the exp dir if load_model is empty.') 
+                                  'in the exp dir if load_model is empty.')
 
     # system
-    self.parser.add_argument('--gpus', default='2, 3',
+    self.parser.add_argument('--gpus', default='0,1,2,3',
                              help='-1 for CPU, use comma for multiple gpus')
     self.parser.add_argument('--num_workers', type=int, default=8,
                              help='dataloader threads. 0 for single-thread.')
     self.parser.add_argument('--not_cuda_benchmark', action='store_true',
                              help='disable when the input size is not fixed.')
-    self.parser.add_argument('--seed', type=int, default=317, 
+    self.parser.add_argument('--seed', type=int, default=317,
                              help='random seed') # from CornerNet
 
     # log
-    self.parser.add_argument('--print_iter', type=int, default=0, 
+    self.parser.add_argument('--print_iter', type=int, default=0,
                              help='disable progress bar and print to screen.')
     self.parser.add_argument('--hide_data_time', action='store_true',
                              help='not display time during training.')
     self.parser.add_argument('--save_all', action='store_true',
                              help='save model to disk every 5 epochs.')
-    self.parser.add_argument('--metric', default='loss', 
+    self.parser.add_argument('--metric', default='loss',
                              help='main metric to save best model')
     self.parser.add_argument('--vis_thresh', type=float, default=0.5,
                              help='visualization threshold.')
-    
+
     # model
-    self.parser.add_argument('--arch', default='dla_34', 
+    self.parser.add_argument('--arch', default='dla_34',
                              help='model architecture. Currently tested'
                                   'resdcn_34 | resdcn_50 | resfpndcn_34 |'
                                   'dla_34 | hrnet_18')
@@ -60,14 +60,14 @@ class opts(object):
                              help='output stride. Currently only supports 4.')
 
     # input
-    self.parser.add_argument('--input_res', type=int, default=-1, 
+    self.parser.add_argument('--input_res', type=int, default=-1,
                              help='input height and width. -1 for default from '
                              'dataset. Will be overriden by input_h | input_w')
-    self.parser.add_argument('--input_h', type=int, default=-1, 
+    self.parser.add_argument('--input_h', type=int, default=-1,
                              help='input height. -1 for default from dataset.')
-    self.parser.add_argument('--input_w', type=int, default=-1, 
+    self.parser.add_argument('--input_w', type=int, default=-1,
                              help='input width. -1 for default from dataset.')
-    
+
     # train
     self.parser.add_argument('--lr', type=float, default=1e-4,
                              help='learning rate for batch size 12.')
@@ -89,7 +89,7 @@ class opts(object):
 
     # test
     self.parser.add_argument('--K', type=int, default=500,
-                             help='max number of output objects.') 
+                             help='max number of output objects.')
     self.parser.add_argument('--not_prefetch_test', action='store_true',
                              help='not use parallal data pre-processing.')
     self.parser.add_argument('--fix_res', action='store_true',
@@ -124,7 +124,7 @@ class opts(object):
     self.parser.add_argument('--data_cfg', type=str,
                              default='../src/lib/cfg/data.json',
                              help='load data from cfg')
-    self.parser.add_argument('--data_dir', type=str, default='/home/zyf/dataset')
+    self.parser.add_argument('--data_dir', type=str, default='/root/paddlejob/workspace/zcd/mydata/dataset')
 
     # loss
     self.parser.add_argument('--mse_loss', action='store_true',
@@ -197,7 +197,7 @@ class opts(object):
     opt.save_dir = os.path.join(opt.exp_dir, opt.exp_id)
     opt.debug_dir = os.path.join(opt.save_dir, 'debug')
     print('The output will be saved to ', opt.save_dir)
-    
+
     if opt.resume and opt.load_model == '':
       model_path = opt.save_dir[:-4] if opt.save_dir.endswith('TEST') \
                   else opt.save_dir
